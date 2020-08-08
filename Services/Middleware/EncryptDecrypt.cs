@@ -26,8 +26,8 @@ namespace SterlingCommunityAPI.Services.Middleware
             httpContext.Request.Body = DecryptStream(httpContext.Request.Body);
             if (httpContext.Request.QueryString.HasValue)
             {
-                string decryptedString = DecryptString(httpContext.Request.QueryString.Value.Substring(1));
-                httpContext.Request.QueryString = new QueryString($"?{decryptedString}");
+               // string decryptedString = DecryptString(httpContext.Request.QueryString.Value.Substring(1));
+               // httpContext.Request.QueryString = new QueryString($"?{decryptedString}");
             }
             await _next(httpContext);
             await httpContext.Request.Body.DisposeAsync();

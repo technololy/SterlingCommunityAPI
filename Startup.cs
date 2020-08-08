@@ -13,12 +13,15 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using SterlingCommunityAPI.Models;
+using SterlingCommunityAPI.Services;
 using SterlingCommunityAPI.Services.Middleware;
 
 namespace SterlingCommunityAPI
 {
     public class Startup
     {
+        private readonly ILogger<Startup> logger;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -45,7 +48,8 @@ namespace SterlingCommunityAPI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-           // app.UseMiddleware<EncryptDecrypt>();
+
+
             app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
@@ -65,10 +69,15 @@ namespace SterlingCommunityAPI
 
             app.UseAuthorization();
 
+            app.UseMiddleware<EncryptDecrypt>();
+            app.UseMiddleware<RequestResponseLoggingMiddleware>();
+            app.UseMiddleware<AuthorizationMiddleware>();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }
