@@ -26,4 +26,12 @@
   </ItemGroup>
 
 
+  <ItemGroup>
+    <None Remove=".DS_Store" />
+    <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="appsettings.Development.json" />
+    <Content Remove="appsettings.json" />
+  </ItemGroup>
 </Project>

@@ -87,20 +87,12 @@ namespace SterlingCommunityAPI.Controllers
             {
                 _context.Session.Add(session);
                 await _context.SaveChangesAsync();
-<<<<<<< HEAD
                
-=======
-
->>>>>>> f6b023a... Initial check-in of module SterlingCommunityAPI
             }
             catch (Exception ex)
             {
 
-<<<<<<< HEAD
                 
-=======
-
->>>>>>> f6b023a... Initial check-in of module SterlingCommunityAPI
             }
 
             return CreatedAtAction("GetSession", new { id = session.SessionId }, session);
@@ -113,11 +105,7 @@ namespace SterlingCommunityAPI.Controllers
             try
             {
                 var sess = (_context.Session.Single(x => x.SessionKey.ToLower() == session.SessionKeyInsertedByUser.ToLower()));
-<<<<<<< HEAD
                 if (sess==null)
-=======
-                if (sess == null)
->>>>>>> f6b023a... Initial check-in of module SterlingCommunityAPI
                 {
                     return Ok(false);
                 }
@@ -164,7 +152,6 @@ namespace SterlingCommunityAPI.Controllers
                     {
                         break;
                     }
-<<<<<<< HEAD
                   responseCheck =  CheckifUserHasResponded(session);
                 }
                 if (responseCheck.isEntered)
@@ -174,26 +161,11 @@ namespace SterlingCommunityAPI.Controllers
                         return Ok( new {isSuccess = true, SessionLogin = responseCheck.sess } );
 
                     
-=======
-                    responseCheck = CheckifUserHasResponded(session);
-                }
-                if (responseCheck.isEntered)
-                {
-
-                    //return user full info
-                    return Ok(new { isSuccess = true, SessionLogin = responseCheck.sess });
-
-
->>>>>>> f6b023a... Initial check-in of module SterlingCommunityAPI
                 }
                 else
                 {
                     //return user should try again as time has expired
-<<<<<<< HEAD
                         return Ok( new {isSuccess = false, SessionLogin = responseCheck.sess } );
-=======
-                    return Ok(new { isSuccess = false, SessionLogin = responseCheck.sess });
->>>>>>> f6b023a... Initial check-in of module SterlingCommunityAPI
 
                 }
             }
@@ -207,19 +179,11 @@ namespace SterlingCommunityAPI.Controllers
 
         }
 
-<<<<<<< HEAD
         private (bool isEntered, Session sess, bool isMatch) CheckifUserHasResponded( Session sess)
         {
             
             var session = _context.Session.Where(d=>d.SessionKeyInsertedByUser.ToLower().Equals(sess.SessionKey.ToLower())).FirstOrDefault();
             if (session==null)
-=======
-        private (bool isEntered, Session sess, bool isMatch) CheckifUserHasResponded(Session sess)
-        {
-
-            var session = _context.Session.Where(d => d.SessionKeyInsertedByUser.ToLower().Equals(sess.SessionKey.ToLower())).FirstOrDefault();
-            if (session == null)
->>>>>>> f6b023a... Initial check-in of module SterlingCommunityAPI
             {
                 hasUserInsertedSessionkey = false;
                 return (hasUserInsertedSessionkey, sess, doesKeymatch);
@@ -247,11 +211,7 @@ namespace SterlingCommunityAPI.Controllers
             //    }
             //}
 
-<<<<<<< HEAD
             return (hasUserInsertedSessionkey,sess,doesKeymatch);
-=======
-            return (hasUserInsertedSessionkey, sess, doesKeymatch);
->>>>>>> f6b023a... Initial check-in of module SterlingCommunityAPI
         }
 
         // DELETE: api/CommunityForum/5
