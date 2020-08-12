@@ -25,13 +25,16 @@ namespace SterlingCommunityAPI.Controllers
 
         // GET: api/CommunityForum
         [HttpGet]
+        [Route("GetAllSession")]
         public async Task<ActionResult<IEnumerable<Session>>> GetSession()
         {
             return await _context.Session.ToListAsync();
         }
 
         // GET: api/CommunityForum/5
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("GetAllSessionByID")]
+
         public async Task<ActionResult<Session>> GetSession(int id)
         {
             var session = await _context.Session.FindAsync(id);
@@ -47,7 +50,9 @@ namespace SterlingCommunityAPI.Controllers
         // PUT: api/CommunityForum/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
+        [HttpPut]
+        [Route("PutSessionByID")]
+
         public async Task<IActionResult> PutSession(int id, Session session)
         {
             if (id != session.SessionId)
@@ -87,12 +92,12 @@ namespace SterlingCommunityAPI.Controllers
             {
                 _context.Session.Add(session);
                 await _context.SaveChangesAsync();
-               
+
             }
             catch (Exception ex)
             {
 
-                
+
             }
 
             return CreatedAtAction("GetSession", new { id = session.SessionId }, session);
@@ -105,7 +110,7 @@ namespace SterlingCommunityAPI.Controllers
             try
             {
                 var sess = (_context.Session.Single(x => x.SessionKey.ToLower() == session.SessionKeyInsertedByUser.ToLower()));
-                if (sess==null)
+                if (sess == null)
                 {
                     return Ok(false);
                 }
@@ -152,20 +157,20 @@ namespace SterlingCommunityAPI.Controllers
                     {
                         break;
                     }
-                  responseCheck =  CheckifUserHasResponded(session);
+                    responseCheck = CheckifUserHasResponded(session);
                 }
                 if (responseCheck.isEntered)
                 {
-                   
-                        //return user full info
-                        return Ok( new {isSuccess = true, SessionLogin = responseCheck.sess } );
 
-                    
+                    //return user full info
+                    return Ok(new { isSuccess = true, SessionLogin = responseCheck.sess });
+
+
                 }
                 else
                 {
                     //return user should try again as time has expired
-                        return Ok( new {isSuccess = false, SessionLogin = responseCheck.sess } );
+                    return Ok(new { isSuccess = false, SessionLogin = responseCheck.sess });
 
                 }
             }
@@ -179,11 +184,11 @@ namespace SterlingCommunityAPI.Controllers
 
         }
 
-        private (bool isEntered, Session sess, bool isMatch) CheckifUserHasResponded( Session sess)
+        private (bool isEntered, Session sess, bool isMatch) CheckifUserHasResponded(Session sess)
         {
-            
-            var session = _context.Session.Where(d=>d.SessionKeyInsertedByUser.ToLower().Equals(sess.SessionKey.ToLower())).FirstOrDefault();
-            if (session==null)
+
+            var session = _context.Session.Where(d => d.SessionKeyInsertedByUser.ToLower().Equals(sess.SessionKey.ToLower())).FirstOrDefault();
+            if (session == null)
             {
                 hasUserInsertedSessionkey = false;
                 return (hasUserInsertedSessionkey, sess, doesKeymatch);
@@ -211,11 +216,13 @@ namespace SterlingCommunityAPI.Controllers
             //    }
             //}
 
-            return (hasUserInsertedSessionkey,sess,doesKeymatch);
+            return (hasUserInsertedSessionkey, sess, doesKeymatch);
         }
 
         // DELETE: api/CommunityForum/5
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("DeleteSessionByID")]
+
         public async Task<ActionResult<Session>> DeleteSession(int id)
         {
             var session = await _context.Session.FindAsync(id);
