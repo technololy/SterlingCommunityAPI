@@ -35,13 +35,10 @@ namespace SterlingCommunityAPI
 
 
             services.AddControllers();
-<<<<<<< HEAD
-            var connection = "Server=DESKTOP-JPCURN7\\SQLEXPRESS;Initial Catalog=SterlingCommunityDB;User Id=loladeking;Password=ishola1986";
-=======
+
             var connection = Configuration.GetConnectionString("SterlingDigitalForumDb");
 
             //var connection = "Server=DESKTOP-JPCURN7\\SQLEXPRESS;Initial Catalog=SterlingCommunityDB;User Id=loladeking;Password=ishola1986";
->>>>>>> f6b023a... Initial check-in of module SterlingCommunityAPI
             services.AddDbContext<SterlingCommunityDBContext>(options => options.UseSqlServer(connection));
             services.AddSwaggerGen(c =>
             {
