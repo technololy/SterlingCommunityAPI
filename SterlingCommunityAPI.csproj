@@ -31,7 +31,7 @@
     <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="appsettings.Development.json" />
-    <Content Remove="appsettings.json" />
+    <None Include="SterlingCommunityAPI.csproj" />
+    <None Include="SterlingCommunityAPI.sln" />
   </ItemGroup>
 </Project>
