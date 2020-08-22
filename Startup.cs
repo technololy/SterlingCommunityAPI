@@ -57,10 +57,15 @@ namespace SterlingCommunityAPI
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
+           // app.UseSwaggerUI(c =>
+          //  {
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "SterlingCommunityAPI V1");
+            //});
             app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SterlingCommunityAPI V1");
-            });
+{
+string swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
+c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v1/swagger.json", "SterlingCommunityAPI V1");
+});
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -74,7 +79,7 @@ namespace SterlingCommunityAPI
 
             app.UseMiddleware<EncryptDecrypt>();
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
-            app.UseMiddleware<AuthorizationMiddleware>();
+           // app.UseMiddleware<AuthorizationMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
