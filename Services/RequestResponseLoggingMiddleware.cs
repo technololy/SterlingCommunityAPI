@@ -23,7 +23,9 @@ namespace SterlingCommunityAPI.Services
 
         public async Task Invoke(HttpContext context)
         {
-            //First, get the incoming request
+      try
+      {
+                //First, get the incoming request
             var request = await FormatRequest(context.Request);
 
             //Copy a pointer to the original response body stream
@@ -46,6 +48,12 @@ namespace SterlingCommunityAPI.Services
                 //Copy the contents of the new memory stream (which contains the response) to the original stream, which is then returned to the client.
                 await responseBody.CopyToAsync(originalBodyStream);
             }
+      }
+      catch (System.Exception ex)
+      {
+          
+          _logger.LogError(ex.ToString());
+      }
         }
 
         private async Task<string> FormatRequest(HttpRequest request)

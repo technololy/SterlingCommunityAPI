@@ -77,8 +77,8 @@ c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v1/swagger.json", "SterlingCom
 
             app.UseAuthorization();
 
-            app.UseMiddleware<EncryptDecrypt>();
-            app.UseMiddleware<RequestResponseLoggingMiddleware>();
+            //app.UseMiddleware<EncryptDecrypt>();
+            //app.UseMiddleware<RequestResponseLoggingMiddleware>();
            // app.UseMiddleware<AuthorizationMiddleware>();
 
             app.UseEndpoints(endpoints =>
