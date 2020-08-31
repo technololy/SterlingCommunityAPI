@@ -1,0 +1,7 @@
+2020-08-31 04:40:29.5907 Info Message Template Auto Format enabled
+2020-08-31 04:40:29.6301 Info Loading assembly: NLog.Web.AspNetCore
+2020-08-31 04:40:29.7305 Info Adding target FileTarget(Name=alldata)
+2020-08-31 04:40:29.7305 Info Adding target FileTarget(Name=otherFile-web)
+2020-08-31 04:40:29.7920 Info Validating config: TargetNames=alldata, otherFile-web, ConfigItems=45, FilePath=E:\c drive\SterlingCommunityAPI-master 3\SterlingCommunityAPI-master\bin\Debug\netcoreapp3.1\NLog.config
+2020-08-31 04:40:29.8347 Info Configuration initialized.
+2020-08-31 04:40:29.8347 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.7.3.11982. Product version: 4.7.3+328d327b81c64f1715d7c6fdfd9605d5f6671abb. GlobalAssemblyCache: False

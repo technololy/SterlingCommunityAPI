@@ -40,7 +40,7 @@ namespace SterlingCommunityAPI.Controllers
 
         public async Task<ActionResult<Session>> GetSession(int id)
         {
-            _logger.LogInformation($"Get session with id {id}");
+            _logger.LogInformation($"Get session with id {id} logged");
             var session = await _context.Session.FindAsync(id);
 
             if (session == null)
