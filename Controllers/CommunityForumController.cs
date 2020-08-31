@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SterlingCommunityAPI.Models;
 
 namespace SterlingCommunityAPI.Controllers
@@ -17,10 +18,12 @@ namespace SterlingCommunityAPI.Controllers
         private bool hasUserInsertedSessionkey;
         private bool doesKeymatch;
         private (bool isEntered, Session sess, bool isMatch) responseCheck;
+        private readonly ILogger<CommunityForumController> _logger;
 
-        public CommunityForumController(SterlingCommunityDBContext context)
+        public CommunityForumController(SterlingCommunityDBContext context, ILogger<CommunityForumController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/CommunityForum
@@ -37,6 +40,7 @@ namespace SterlingCommunityAPI.Controllers
 
         public async Task<ActionResult<Session>> GetSession(int id)
         {
+            _logger.LogInformation($"Get session with id {id}");
             var session = await _context.Session.FindAsync(id);
 
             if (session == null)
@@ -90,6 +94,7 @@ namespace SterlingCommunityAPI.Controllers
         {
             try
             {
+                _logger.LogInformation(session.SessionKey);
                 _context.Session.Add(session);
                 await _context.SaveChangesAsync();
 
@@ -97,7 +102,7 @@ namespace SterlingCommunityAPI.Controllers
             catch (Exception ex)
             {
 
-
+_logger.LogError(ex.ToString());
             }
 
             return CreatedAtAction("GetSession", new { id = session.SessionId }, session);
@@ -109,9 +114,13 @@ namespace SterlingCommunityAPI.Controllers
         {
             try
             {
+                _logger.LogInformation($"key in session {0}",session);
+                _logger.LogInformation($"key in session by {session.UserName}, with session id {session.SessionKeyInsertedByUser}");
                 var sess = (_context.Session.Single(x => x.SessionKey.ToLower() == session.SessionKeyInsertedByUser.ToLower()));
                 if (sess == null)
                 {
+                _logger.LogInformation($"key in session {0} return false",session);
+
                     return Ok(false);
                 }
                 sess.SessionKeyInsertedByUser = session.SessionKeyInsertedByUser;
@@ -145,6 +154,7 @@ namespace SterlingCommunityAPI.Controllers
         {
             try
             {
+                _logger.LogInformation($"Polling session {0}",session);
 
                 var start = DateTime.Now.TimeOfDay;
                 var cutOff = DateTime.Now.AddMinutes(3);
@@ -153,6 +163,8 @@ namespace SterlingCommunityAPI.Controllers
 
                 while (DateTime.Now.TimeOfDay < cutOffTime)
                 {
+                _logger.LogInformation($"Polling session time now {DateTime.Now.TimeOfDay} and cutofftime is {cutOffTime}");
+
                     if (hasUserInsertedSessionkey)
                     {
                         break;
@@ -161,6 +173,7 @@ namespace SterlingCommunityAPI.Controllers
                 }
                 if (responseCheck.isEntered)
                 {
+                _logger.LogInformation($"Polling session check is returnimg success as final response");
 
                     //return user full info
                     return Ok(new { isSuccess = true, SessionLogin = responseCheck.sess });
@@ -169,6 +182,8 @@ namespace SterlingCommunityAPI.Controllers
                 }
                 else
                 {
+                _logger.LogInformation($"Polling session check is returning failed as final response");
+
                     //return user should try again as time has expired
                     return Ok(new { isSuccess = false, SessionLogin = responseCheck.sess });
 
@@ -176,6 +191,8 @@ namespace SterlingCommunityAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogInformation($"Polling session exception {ex}");
+
                 return Ok(new { isSuccess = true, SessionLogin = new Session() });
 
 
@@ -190,12 +207,16 @@ namespace SterlingCommunityAPI.Controllers
             var session = _context.Session.Where(d => d.SessionKeyInsertedByUser.ToLower().Equals(sess.SessionKey.ToLower())).FirstOrDefault();
             if (session == null)
             {
+                _logger.LogInformation($"Polling session check if session  {sess.SessionKeyInsertedByUser} is inserted. cant find it.");
+                
                 hasUserInsertedSessionkey = false;
                 return (hasUserInsertedSessionkey, sess, doesKeymatch);
 
             }
             else
             {
+                _logger.LogInformation($"Polling session check if session  {sess.SessionKeyInsertedByUser} is inserted. found it.");
+
                 hasUserInsertedSessionkey = true;
                 return (true, session, true);
             }
