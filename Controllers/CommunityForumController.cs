@@ -94,7 +94,8 @@ namespace SterlingCommunityAPI.Controllers
         {
             try
             {
-                _logger.LogInformation(session.SessionKey);
+                _logger.LogInformation($"save session {Newtonsoft.Json.JsonConvert.SerializeObject(session)}");
+
                 _context.Session.Add(session);
                 await _context.SaveChangesAsync();
 
@@ -102,7 +103,7 @@ namespace SterlingCommunityAPI.Controllers
             catch (Exception ex)
             {
 
-_logger.LogError(ex.ToString());
+                _logger.LogError(ex.ToString());
             }
 
             return CreatedAtAction("GetSession", new { id = session.SessionId }, session);
@@ -114,8 +115,8 @@ _logger.LogError(ex.ToString());
         {
             try
             {
-                _logger.LogInformation($"key in session {0}",session);
-                _logger.LogInformation($"key in session by {session.UserName}, with session id {session.SessionKeyInsertedByUser}");
+                _logger.LogInformation($"key in session {Newtonsoft.Json.JsonConvert.SerializeObject(session)}");
+
                 var sess = (_context.Session.Single(x => x.SessionKey.ToLower() == session.SessionKeyInsertedByUser.ToLower()));
                 if (sess == null)
                 {
@@ -154,7 +155,7 @@ _logger.LogError(ex.ToString());
         {
             try
             {
-                _logger.LogInformation($"Polling session {0}",session);
+                _logger.LogInformation($"Polling session {Newtonsoft.Json.JsonConvert.SerializeObject(session)}");
 
                 var start = DateTime.Now.TimeOfDay;
                 var cutOff = DateTime.Now.AddMinutes(3);
